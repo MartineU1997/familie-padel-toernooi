@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Familie Uyland Sinterklaas Padel Toernooi 🎾</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #d32f2f;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .timer-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .timer-section h2 {
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .timer {
+            font-size: 3em;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .current-round-info {
+            font-size: 1.3em;
+            margin-top: 15px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .info-card h3 {
+            color: #d32f2f;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .rounds-container {
+            display: grid;
+            gap: 25px;
+        }
+
+        .round-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .round-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .round-card.active {
+            border: 3px solid #f5576c;
+            background: linear-gradient(135deg, #fff 0%, #ffe5e5 100%);
+        }
+
+        .round-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .round-title {
+            font-size: 1.8em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .round-time {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .courts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .court {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 20px;
+            border-radius: 12px;
+            color: #333;
+        }
+
+        .court h4 {
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            color: #1a237e;
+        }
+
+        .players {
+            display: grid;
+            gap: 8px;
+        }
+
+        .player {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .bench {
+            background: #ffe5e5;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .bench h4 {
+            color: #d32f2f;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+
+        .bench-players {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .bench-player {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.95em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .highlight {
+            background: #ffeb3b !important;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin: 0 5px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .timer {
+                font-size: 2em;
+            }
+
+            .courts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .start-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-stop {
+            background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+            color: white;
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎅 Familie Uyland Sinterklaas Padel Toernooi 🎾</h1>
+            <p class="subtitle">Zaterdag 6 December 2025</p>
+            <p><strong>Verzamelen:</strong> 14:00 uur | <strong>Inspelen:</strong> 14:30-15:00 | <strong>Start:</strong> 15:00 uur</p>
+        </header>
+
+        <div class="timer-section">
+            <h2>⏱️ Live Timer</h2>
+            <div class="timer" id="timer">--:--</div>
+            <div class="current-round-info" id="currentRoundInfo">Nog niet gestart</div>
+            <div class="start-buttons">
+                <button class="btn btn-start" id="startBtn" onclick="startTimer()">Start Toernooi</button>
+                <button class="btn btn-stop" id="stopBtn" onclick="stopTimer()" disabled>Pauzeer</button>
+                <button class="btn btn-reset" onclick="resetTimer()">Reset</button>
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>📋 Spelregels</h3>
+                <p>• 6 rondes van 20 minuten<br>
+                • 4 spelers per baan<br>
+                • 8 personen op de bank<br>
+                • Iedereen speelt 3 of 4 rondes</p>
+            </div>
+            <div class="info-card">
+                <h3>🎯 Planning</h3>
+                <p>• 14:00 - Verzamelen<br>
+                • 14:30 - Inspelen<br>
+                • 15:00 - Start toernooi<br>
+                • 17:00 - Einde</p>
+            </div>
+            <div class="info-card">
+                <h3>🏟️ Banen</h3>
+                <p>• Baan 1<br>
+                • Baan 2<br>
+                • Baan 3<br>
+                • + Bankje voor 8 personen</p>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <h3 style="margin-bottom: 15px; color: #667eea;">🔍 Zoek wanneer je speelt</h3>
+            <input type="text" class="search-input" id="searchInput" placeholder="Typ je naam..." onkeyup="searchPlayer()">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+
+        <div class="rounds-container" id="roundsContainer">
+            <!-- Rounds will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const schedule = [
+            {
+                round: 1,
+                time: "15:00 - 15:20",
+                startTime: new Date(2025, 11, 6, 15, 0),
+                courts: [
+                    { number: 1, players: ["Daan", "Ella", "Koen", "Stijn"] },
+                    { number: 2, players: ["Bas", "Hannah Mae", "Sabine", "Thijs B"] },
+                    { number: 3, players: ["Kim", "Julie", "Myrthe", "Thijs"] }
+                ],
+                bench: ["Franciska", "Herman", "Karin", "Lauret", "Martine", "Peter", "Stan", "Veronique"]
+            },
+            {
+                round: 2,
+                time: "15:20 - 15:40",
+                startTime: new Date(2025, 11, 6, 15, 20),
+                courts: [
+                    { number: 1, players: ["Daan", "Hannah Mae", "Karin", "Martine"] },
+                    { number: 2, players: ["Franciska", "Koen", "Lauret", "Stan"] },
+                    { number: 3, players: ["Herman", "Sabine", "Veronique", "Peter"] }
+                ],
+                bench: ["Bas", "Ella", "Julie", "Kim", "Myrthe", "Stijn", "Thijs", "Thijs B"]
+            },
+            {
+                round: 3,
+                time: "15:40 - 16:00",
+                startTime: new Date(2025, 11, 6, 15, 40),
+                courts: [
+                    { number: 1, players: ["Lauret", "Martine", "Stan", "Thijs B"] },
+                    { number: 2, players: ["Ella", "Kim", "Myrthe", "Julie"] },
+                    { number: 3, players: ["Bas", "Stijn", "Peter", "Thijs"] }
+                ],
+                bench: ["Daan", "Franciska", "Hannah Mae", "Herman", "Karin", "Koen", "Sabine", "Veronique"]
+            },
+            {
+                round: 4,
+                time: "16:00 - 16:20",
+                startTime: new Date(2025, 11, 6, 16, 0),
+                courts: [
+                    { number: 1, players: ["Daan", "Hannah Mae", "Kim", "Veronique"] },
+                    { number: 2, players: ["Bas", "Ella", "Herman", "Sabine"] },
+                    { number: 3, players: ["Franciska", "Karin", "Koen", "Myrthe"] }
+                ],
+                bench: ["Julie", "Lauret", "Martine", "Peter", "Stan", "Stijn", "Thijs", "Thijs B"]
+            },
+            {
+                round: 5,
+                time: "16:20 - 16:40",
+                startTime: new Date(2025, 11, 6, 16, 20),
+                courts: [
+                    { number: 1, players: ["Herman", "Julie", "Lauret", "Stijn"] },
+                    { number: 2, players: ["Karin", "Martine", "Stan", "Thijs"] },
+                    { number: 3, players: ["Franciska", "Peter", "Sabine", "Thijs B"] }
+                ],
+                bench: ["Bas", "Daan", "Ella", "Hannah Mae", "Kim", "Koen", "Myrthe", "Veronique"]
+            },
+            {
+                round: 6,
+                time: "16:40 - 17:00",
+                startTime: new Date(2025, 11, 6, 16, 40),
+                courts: [
+                    { number: 1, players: ["Hannah Mae", "Koen", "Myrthe", "Stijn"] },
+                    { number: 2, players: ["Daan", "Ella", "Veronique", "Thijs B"] },
+                    { number: 3, players: ["Bas", "Julie", "Kim", "Thijs"] }
+                ],
+                bench: ["Franciska", "Herman", "Karin", "Lauret", "Martine", "Peter", "Stan", "Sabine"]
+            }
+        ];
+
+        let timerInterval;
+        let isPaused = false;
+        let currentRound = 0;
+        let tournamentStartTime;
+
+        function renderSchedule() {
+            const container = document.getElementById('roundsContainer');
+            container.innerHTML = '';
+
+            schedule.forEach(round => {
+                const roundDiv = document.createElement('div');
+                roundDiv.className = 'round-card';
+                roundDiv.id = `round-${round.round}`;
+
+                let courtsHTML = round.courts.map(court => `
+                    <div class="court">
+                        <h4>🎾 Baan ${court.number}</h4>
+                        <div class="players">
+                            ${court.players.map(player => `<div class="player">${player}</div>`).join('')}
+                        </div>
+                    </div>
+                `).join('');
+
+                roundDiv.innerHTML = `
+                    <div class="round-header">
+                        <div class="round-title">Ronde ${round.round}</div>
+                        <div class="round-time">${round.time}</div>
+                    </div>
+                    <div class="courts-grid">
+                        ${courtsHTML}
+                    </div>
+                    <div class="bench">
+                        <h4>🪑 Bank</h4>
+                        <div class="bench-players">
+                            ${round.bench.map(player => `<span class="bench-player">${player}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(roundDiv);
+            });
+        }
+
+        function startTimer() {
+            if (!tournamentStartTime) {
+                tournamentStartTime = new Date();
+            }
+            
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+            isPaused = false;
+
+            timerInterval = setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            isPaused = true;
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            tournamentStartTime = null;
+            currentRound = 0;
+            isPaused = false;
+            document.getElementById('timer').textContent = '--:--';
+            document.getElementById('currentRoundInfo').textContent = 'Nog niet gestart';
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            
+            // Remove active class from all rounds
+            document.querySelectorAll('.round-card').forEach(card => {
+                card.classList.remove('active');
+            });
+        }
+
+        function updateTimer() {
+            if (!tournamentStartTime) return;
+
+            const now = new Date();
+            const elapsed = Math.floor((now - tournamentStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+
+            document.getElementById('timer').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            // Determine current round (20 minutes = 1200 seconds per round)
+            const newRound = Math.floor(elapsed / 1200) + 1;
+            
+            if (newRound !== currentRound) {
+                // Remove active class from all rounds
+                document.querySelectorAll('.round-card').forEach(card => {
+                    card.classList.remove('active');
+                });
+
+                currentRound = newRound;
+
+                if (currentRound <= 6) {
+                    document.getElementById('currentRoundInfo').textContent = 
+                        `Nu bezig: Ronde ${currentRound} (${schedule[currentRound - 1].time})`;
+                    
+                    // Add active class to current round
+                    const currentRoundCard = document.getElementById(`round-${currentRound}`);
+                    if (currentRoundCard) {
+                        currentRoundCard.classList.add('active');
+                        currentRoundCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                } else {
+                    document.getElementById('currentRoundInfo').textContent = 
+                        '🎉 Toernooi afgelopen! Gefeliciteerd iedereen!';
+                    stopTimer();
+                }
+            }
+
+            // Update info for current round
+            if (currentRound > 0 && currentRound <= 6) {
+                const timeInRound = elapsed % 1200;
+                const roundTimeLeft = 1200 - timeInRound;
+                const minLeft = Math.floor(roundTimeLeft / 60);
+                const secLeft = roundTimeLeft % 60;
+                
+                document.getElementById('currentRoundInfo').textContent = 
+                    `Nu bezig: Ronde ${currentRound} | Nog ${minLeft}:${String(secLeft).padStart(2, '0')} te gaan`;
+            }
+        }
+
+        function searchPlayer() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsDiv = document.getElementById('searchResults');
+
+            if (searchTerm === '') {
+                resultsDiv.style.display = 'none';
+                // Remove all highlights
+                document.querySelectorAll('.highlight').forEach(el => {
+                    el.classList.remove('highlight');
+                });
+                return;
+            }
+
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = '<h4 style="margin-bottom: 10px;">Zoekresultaten:</h4>';
+
+            let found = false;
+            let playingRounds = [];
+            let benchRounds = [];
+
+            schedule.forEach(round => {
+                // Check courts
+                round.courts.forEach(court => {
+                    court.players.forEach(player => {
+                        if (player.toLowerCase().includes(searchTerm)) {
+                            playingRounds.push({
+                                round: round.round,
+                                time: round.time,
+                                location: `Baan ${court.number}`,
+                                type: 'playing'
+                            });
+                            found = true;
+                        }
+                    });
+                });
+
+                // Check bench
+                round.bench.forEach(player => {
+                    if (player.toLowerCase().includes(searchTerm)) {
+                        benchRounds.push({
+                            round: round.round,
+                            time: round.time,
+                            type: 'bench'
+                        });
+                        found = true;
+                    }
+                });
+            });
+
+            if (!found) {
+                resultsDiv.innerHTML += '<p>Geen speler gevonden met deze naam.</p>';
+            } else {
+                if (playingRounds.length > 0) {
+                    resultsDiv.innerHTML += '<p><strong>🎾 Speelt in:</strong></p>';
+                    playingRounds.forEach(info => {
+                        resultsDiv.innerHTML += `<p style="margin-left: 15px;">• Ronde ${info.round} (${info.time}) - ${info.location}</p>`;
+                    });
+                }
+
+                if (benchRounds.length > 0) {
+                    resultsDiv.innerHTML += '<p style="margin-top: 10px;"><strong>🪑 Op de bank in:</strong></p>';
+                    benchRounds.forEach(info => {
+                        resultsDiv.innerHTML += `<p style="margin-left: 15px;">• Ronde ${info.round} (${info.time})</p>`;
+                    });
+                }
+
+                // Highlight matching players
+                document.querySelectorAll('.player, .bench-player').forEach(el => {
+                    if (el.textContent.toLowerCase().includes(searchTerm)) {
+                        el.classList.add('highlight');
+                    } else {
+                        el.classList.remove('highlight');
+                    }
+                });
+            }
+        }
+
+        // Initialize
+        renderSchedule();
+    </script>
+</body>
+</html>
